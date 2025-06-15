@@ -2,7 +2,8 @@
   <div class="home">
     <h1>Art Design Pro Dashboard</h1>
     <nav>
-      <router-link to="/httpbin">Go to HttpBin Form</router-link>
+      <router-link to="/httpbin">HttpBin Form</router-link>
+      <router-link to="/demo">View Full Demo</router-link>
     </nav>
     <div class="dashboard-content">
       <p>Welcome to the Art Design Pro dashboard. This is a demonstration of various UI components and features.</p>
