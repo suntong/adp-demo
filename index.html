@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" /> <!-- Default Vite icon, can be replaced -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Art Design Pro - Vue 3 Admin Dashboard Template Showcase">
+    <!--
+      The theme (dark/light class on html) will be set by the store/App.vue dynamically.
+      No need to set a default class here unless specifically required for no-JS scenarios or initial flash prevention.
+    -->
+    <title>Art Design Pro - Vue Admin</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- Application will be mounted here -->
+      <!-- Optional: Add a loading spinner for better UX before Vue mounts -->
+      <style>
+        .app-loading {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          font-family: Arial, sans-serif;
+          font-size: 1.2em;
+          color: #555;
+        }
+        /* Basic spinner */
+        .spinner {
+          border: 4px solid rgba(0,0,0,.1);
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border-left-color: #09f;
+          animation: spin 1s ease infinite;
+          margin-right: 10px;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      </style>
+      <div class="app-loading">
+        <div class="spinner"></div>
+        Loading Art Design Pro...
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

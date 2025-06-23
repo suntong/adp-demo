@@ -1,0 +1,100 @@
+// Import Element Plus base styles (variables, mixins etc.) if not handled by vite plugin fully
+// Usually, auto-import plugin for Element Plus with `importStyle: 'sass'` handles this.
+// @import "element-plus/theme-chalk/src/index.scss"; // Might not be needed if using CSS Vars + auto-import
+
+// Import our custom theme variables and dark mode overrides
+@import './theme.scss';
+
+// Global SCSS
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  // Apply base text and background colors using CSS variables for themeability
+  color: var(--el-text-color-primary);
+  background-color: var(--el-bg-color-page);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+// Utility classes
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+.clearfix::after {
+  clear: both;
+}
+
+// Scrollbar styles (can also be themed with CSS variables if desired)
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background-color: var(--el-fill-color-lighter, #f1f1f1); // Use theme variable with fallback
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--el-border-color-darker, #c1c1c1); // Use theme variable with fallback
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--el-border-color-dark, #a8a8a8); // Use theme variable with fallback
+}
+::-webkit-scrollbar-corner {
+  background-color: var(--el-fill-color-lighter, #f1f1f1); // Use theme variable with fallback
+}
+
+
+// Fix for Element Plus dialogs not being scrollable when content overflows
+.el-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; // Max height relative to viewport
+  overflow: hidden;
+
+  .el-dialog__header {
+    // background-color: var(--el-bg-color-overlay); // Ensure header matches dialog bg
+  }
+  .el-dialog__body {
+    overflow-y: auto;
+    flex-grow: 1;
+    // padding: 20px; // Ensure padding is consistent
+  }
+  .el-dialog__footer {
+    // background-color: var(--el-bg-color-overlay); // Ensure footer matches dialog bg
+    // padding: 10px 20px; // Ensure padding is consistent
+  }
+}
+
+// Ensure Popper (used by dropdowns, tooltips, etc.) backgrounds are themed.
+// Element Plus >2.2+ uses CSS variables for this.
+// .el-popper {
+//   background-color: var(--el-bg-color-overlay);
+//   border-color: var(--el-border-color);
+// }
+// .el-popper .el-popper__arrow::before {
+//    background: var(--el-bg-color-overlay);
+//    border-color: var(--el-border-color);
+// }
+
+// Additional global styles or overrides for Art Design Pro can go here.
+// For example, link styles:
+a {
+  color: var(--el-color-primary);
+  text-decoration: none;
+  &:hover {
+    color: var(--el-color-primary-light-3, #79bbff); // Use fallback
+    text-decoration: underline;
+  }
+}
