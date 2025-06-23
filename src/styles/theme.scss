@@ -129,7 +129,4 @@ html.dark {
 // For example, the body background.
 // The DemoPage.vue already applies `document.documentElement.className` for `html.dark`.
 // The ECharts theme is handled separately in the DemoPage.vue script.
-```
-
-This file primarily defines CSS variables that Element Plus uses, overriding them for the dark theme.
-I'll also update `src/styles/index.scss` to use some of these variables.
+// Ensure all text below this line is valid SCSS or commented out.

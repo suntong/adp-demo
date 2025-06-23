@@ -165,13 +165,14 @@ import { ElNotification } from 'element-plus'
 import { Search, Edit, Share, Star } from '@element-plus/icons-vue'
 
 // For HttpBinForm (will be its own component, but placeholder for now)
-import HttpBinForm from '@/components/HttpBinForm.vue' // Assuming this will be created
+// import HttpBinForm from '@/components/HttpBinForm.vue' // Assuming this will be created
+// This one is ALREADY imported below, so removing this duplicate.
 
 import { useAppStore } from '@/store/app'
 import { useUserStore } from '@/store/user'
 import { storeToRefs } from 'pinia'
 
-// For HttpBinForm (will be its own component, but placeholder for now)
+// For HttpBinForm
 import HttpBinForm from '@/components/HttpBinForm.vue'
 
 const appStore = useAppStore()
