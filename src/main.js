@@ -37,6 +37,7 @@ app.config.errorHandler = (err, instance, info) => {
 
 // --- Custom Directives ---
 import { useUserStore } from '@/store/user'
+import { useAppStore } from '@/store/app' // Added import for useAppStore
 
 app.directive('auth', {
   mounted(el, binding) {
