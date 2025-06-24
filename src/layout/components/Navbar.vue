@@ -60,66 +60,55 @@ const { t } = useI18n()
 const breadcrumbs = ref([])
 
 const getBreadcrumbs = () => {
-  let matched = route.matched.filter(item => item.meta && item.meta.title);
+  const newBreadcrumbs = [];
 
-  // Handle the case where the root path might be the layout itself.
-  // We always want 'Dashboard' or a similar home link as the first clickable item if not on Dashboard page.
-  const isDashboardRoute = route.name === 'Dashboard' || route.path === '/dashboard';
+  // Filter route.matched to include only routes with meta.title
+  const matchedRoutes = route.matched.filter(item => item.meta && item.meta.title);
 
-  if (!isDashboardRoute && matched.length > 0 && matched[0].name !== 'Dashboard') {
-      // Check if 'Dashboard' is part of the matched routes (e.g. if routes are nested under a Dashboard parent that is not the Layout)
-      // This simple check assumes 'Dashboard' is a top-level sibling or the target of root redirect.
-      if (!matched.some(r => r.name === 'Dashboard')) {
-          const dashboardRouteConfig = router.getRoutes().find(r => r.name === 'Dashboard');
-          if (dashboardRouteConfig) {
-              matched.unshift({
-                  path: dashboardRouteConfig.path,
-                  meta: { ...dashboardRouteConfig.meta }, // Clone meta
-                  name: dashboardRouteConfig.name // Use route name for consistency
-              });
-          }
+  matchedRoutes.forEach((item, index) => {
+    const title = item.meta.title;
+    const label = (typeof title === 'string' && title.startsWith('route.')) ? t(title) : title;
+
+    if (label) {
+      let path = item.path;
+
+      const isLast = index === matchedRoutes.length - 1;
+      // A breadcrumb item is clickable if it's not the last one AND
+      // it's not marked as noRedirect AND its path is different from the current full path.
+      // (The last part `item.path !== route.fullPath` ensures even if a parent has same path as child, only child is non-clickable if last)
+      // Or if it has a specific meta.breadcrumbPath to click to.
+      let clickablePath = item.redirect || item.path; // Path to navigate to
+      let clickable = !isLast && item.meta.noRedirect !== true && item.meta.breadcrumbClickable !== false;
+
+      // If a route has a specific breadcrumbPath in meta, use that for navigation
+      if (item.meta.breadcrumbPath) {
+          clickablePath = item.meta.breadcrumbPath;
       }
-  }
 
-  // If current route is dashboard, only show dashboard breadcrumb
-  if (isDashboardRoute) {
-      const dashboardRouteConfig = router.getRoutes().find(r => r.name === 'Dashboard');
-      if (dashboardRouteConfig && dashboardRouteConfig.meta && dashboardRouteConfig.meta.title) {
-          matched = [{ path: dashboardRouteConfig.path, meta: { ...dashboardRouteConfig.meta }, name: dashboardRouteConfig.name }];
-      } else {
-          matched = []; // Safety net
-      }
-  }
-
-  breadcrumbs.value = matched
-    .filter(item => item.meta && item.meta.title) // Ensure item has meta and title
-    .map((item, index, arr) => {
-      const title = item.meta.title;
-      // Translate title if it's an i18n key (e.g., "route.dashboard")
-      const label = (typeof title === 'string' && title.startsWith('route.')) ? t(title) : title;
-
-      const isLast = index === arr.length - 1;
-      let path = item.redirect || item.path; // Use redirect path if available for parent items
-
-      // The last item is not clickable. Also, items with meta.noRedirect are not clickable.
-      // Or if an item explicitly says it's not breadcrumbClickable
-      const clickable = !isLast && item.meta.noRedirect !== true && item.meta.breadcrumbClickable !== false;
-
-      return {
-        path: path,
+      newBreadcrumbs.push({
+        path: clickablePath,
         name: label,
-        clickable: clickable
-      };
-    }).filter(item => item.name && item.name.trim() !== ''); // Filter out items with no valid name
+        clickable: clickable,
+      });
+    }
+  });
+
+  breadcrumbs.value = newBreadcrumbs;
 };
 
 watch(
-  () => route.path,
+  () => route.fullPath, // Watch fullPath to react to query/hash changes if they affect breadcrumbs (though usually not)
+                       // More commonly, route.path is sufficient if only path segments matter.
   () => {
     getBreadcrumbs();
   },
-  { immediate: true } // immediate: true to run on component mount
+  { immediate: true }
 );
+
+// onMounted is not strictly needed due to immediate:true in watch, but doesn't hurt.
+// onMounted(() => {
+//   getBreadcrumbs();
+// });
 
 const handleLogout = async () => {
   await userStore.logout();
