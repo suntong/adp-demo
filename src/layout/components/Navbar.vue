@@ -158,7 +158,7 @@ const handleLogout = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 15px;
+  padding: 0 10px; // Reduced horizontal padding
 
   .left-menu {
     display: flex;
