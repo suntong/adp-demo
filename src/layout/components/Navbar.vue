@@ -162,41 +162,59 @@ const handleLogout = async () => {
   padding: 0;
 
   .left-menu {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    overflow: hidden;
-    height: 100%; // Ensure left-menu takes full height for alignment
-    padding-left: 5px; // Minimal padding for the breadcrumb start
+    display: flex; // Already has align-items: center from .navbar
+    height: 100%;
+    // Remove flex-grow: 1 from here, let the breadcrumb define its natural width.
+    // The justify-content: space-between on .navbar will push .right-menu.
+    // overflow: hidden; // Keep if breadcrumbs can be excessively long
+    padding-left: 5px; // Minimal padding, this is the "dead space" control
   }
 
   .breadcrumb-container {
-    margin-left: 0;
-    padding-left: 0;
     display: flex;
-    align-items: center;
-    height: 100%; // Make breadcrumb container take full height of navbar
-    line-height: 50px; // Explicitly set line-height to navbar height for vertical centering
+    align-items: center; // This is key for vertical centering of breadcrumb items
+    height: 100%; // Ensure it uses full navbar height
+    margin: 0;    // Reset margin
+    padding: 0;   // Reset padding
+
+    // Targeting Element Plus specific classes more directly for reset:
+    :deep(.el-breadcrumb) {
+      display: flex;
+      align-items: center;
+      line-height: normal; // Reset line-height on the component itself
+    }
+
+    :deep(.el-breadcrumb__item) {
+      display: flex; // Make items flex containers too
+      align-items: center; // Align inner content (link/span and separator)
+      margin: 0 !important; // Override Element Plus margins on items
+      padding: 0 !important; // Override Element Plus paddings on items
+
+      .el-breadcrumb__inner,
+      .el-breadcrumb__inner a,
+      .el-breadcrumb__inner.is-link {
+        display: inline-flex !important; // Use !important to fight specificity if needed
+        align-items: center !important;
+        line-height: normal !important; // Reset line-height
+        padding: 0 5px !important; // Minimal padding around text
+        white-space: nowrap; // Prevent wrapping that might cause height issues
+      }
+      .el-breadcrumb__separator {
+        display: inline-flex !important;
+        align-items: center !important;
+        margin: 0 5px !important; // Control separator margin
+        line-height: normal !important;
+        color: var(--el-text-color-placeholder);
+      }
+    }
 
     .no-redirect {
       color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
+      // padding: 0 5px; // Already handled by .el-breadcrumb__inner
     }
-    :deep(.el-breadcrumb__item) {
-      .el-breadcrumb__inner {
-        display: inline-flex;
-        align-items: center;
-        // Resetting potential default line-heights from Element Plus if they interfere
-        line-height: normal;
-      }
-      .el-breadcrumb__separator {
-        // Ensure separator is also vertically centered if it has different line-height
-        line-height: normal;
-        display: inline-flex;
-        align-items: center;
-      }
-    }
+
     :deep(.el-breadcrumb__inner a),
     :deep(.el-breadcrumb__inner.is-link) {
         color: var(--el-text-color-regular);
