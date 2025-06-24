@@ -177,49 +177,51 @@ const handleLogout = async () => {
     padding: 0;
 
     :deep(.el-breadcrumb) {
-      display: flex; // Make the el-breadcrumb component a flex container
-      align-items: center; // Vertically center its children (el-breadcrumb__item)
-      height: 100%; // Ensure el-breadcrumb takes up the full height to allow centering
-      font-size: 14px;
-      line-height: 1; // Critical: Set line-height to 1 to prevent text from adding extra height
+      display: flex;
+      align-items: center;
+      height: 100%; // Make el-breadcrumb fill the .breadcrumb-container height
+      font-size: 14px; // Set a base font size
+      // line-height: 50px; // Remove this, let align-items handle vertical centering of items
     }
 
     :deep(.el-breadcrumb__item) {
-      display: inline-flex; // Use inline-flex for items
-      align-items: center; // Vertically center content within each item
+      display: flex; // Make each item a flex container
+      align-items: center; // Vertically center its inner content (.el-breadcrumb__inner and separator)
       margin: 0 !important;
       padding: 0 !important;
-      line-height: 1; // Critical: Ensure item's line-height doesn't add extra space
+      // No explicit line-height here, rely on parent's flex centering
 
       .el-breadcrumb__inner,
       .el-breadcrumb__inner a,
       .el-breadcrumb__inner.is-link {
-        display: inline-flex !important;
-        align-items: center !important; // Center text within the inner span/link
-        padding: 0 4px !important; // Consistent padding
-        line-height: inherit; // Inherit line-height: 1 from .el-breadcrumb__item
+        display: flex !important; // Use flex for inner content as well for alignment
+        align-items: center !important;
+        padding: 0 3px !important; // Minimal padding around the text/link
+        line-height: normal; // Use browser default line-height for the text itself
         white-space: nowrap;
+        text-decoration: none; // Remove underline from links by default
       }
       .el-breadcrumb__separator {
-        display: inline-flex !important;
-        align-items: center !important; // Center separator
+        display: flex !important; // Flex for separator
+        align-items: center !important;
         margin: 0 5px !important;
-        line-height: inherit; // Inherit line-height: 1
+        line-height: normal; // Browser default line-height
         color: var(--el-text-color-placeholder);
       }
     }
 
+    // Style for the non-clickable current page text
     .no-redirect {
       color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
-      // Ensure it also aligns like a link/inner item
-      display: inline-flex;
+      display: flex; // Ensure it behaves like other inner items for alignment
       align-items: center;
-      padding: 0 4px !important; // Consistent padding
+      padding: 0 3px !important; // Match link padding
+      line-height: normal;
     }
 
-    // These specific color overrides were fine, keeping them
+    // Link styles
     :deep(.el-breadcrumb__inner a),
     :deep(.el-breadcrumb__inner.is-link) {
         color: var(--el-text-color-regular);
