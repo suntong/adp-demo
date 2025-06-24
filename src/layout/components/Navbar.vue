@@ -158,24 +158,25 @@ const handleLogout = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 10px; // Reduced horizontal padding
+  // Remove overall navbar padding, will control spacing within left/right menu items
+  padding: 0;
 
   .left-menu {
     display: flex;
     align-items: center;
-    // Allow left-menu to take available space if needed, but breadcrumb will align left
-    flex-grow: 1; // Allow it to grow
-    overflow: hidden; // Prevent breadcrumb from overflowing navbar
+    flex-grow: 1;
+    overflow: hidden;
+    height: 100%; // Ensure left-menu takes full height for alignment
+    padding-left: 5px; // Minimal padding for the breadcrumb start
   }
 
   .breadcrumb-container {
-    margin-left: 0; // Remove any default/residual left margin
-    padding-left: 0; // Ensure no padding pushes it right
-    display: flex; // Ensure breadcrumb itself aligns items correctly
-    align-items: center; // Vertically center items within breadcrumb container
-    // The navbar itself is 50px high and uses align-items: center for .left-menu
-    // So, the breadcrumb should be vertically centered.
-    // If it appears too high, it might be due to line-height of el-breadcrumb-item.
+    margin-left: 0;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    height: 100%; // Make breadcrumb container take full height of navbar
+    line-height: 50px; // Explicitly set line-height to navbar height for vertical centering
 
     .no-redirect {
       color: var(--el-text-color-primary);
@@ -183,10 +184,16 @@ const handleLogout = async () => {
       font-weight: 600;
     }
     :deep(.el-breadcrumb__item) {
-      // Try to ensure breadcrumb items themselves don't have excessive top/bottom margin/padding
-      // that might make them appear misaligned within the 50px navbar.
       .el-breadcrumb__inner {
-        display: inline-flex; // Helps with vertical alignment of text and icons if any
+        display: inline-flex;
+        align-items: center;
+        // Resetting potential default line-heights from Element Plus if they interfere
+        line-height: normal;
+      }
+      .el-breadcrumb__separator {
+        // Ensure separator is also vertically centered if it has different line-height
+        line-height: normal;
+        display: inline-flex;
         align-items: center;
       }
     }
