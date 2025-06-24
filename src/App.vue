@@ -77,10 +77,12 @@ watch(() => appStore.currentTheme, (newTheme) => {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.6); /* Reduced opacity for dimming effect */
   display: flex;
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(5px); /* Optional: Add a blur effect to the background */
+  -webkit-backdrop-filter: blur(5px); /* For Safari */
   z-index: 9999; // High z-index to cover everything
   color: #fff;
   text-align: center;
