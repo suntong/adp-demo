@@ -167,43 +167,46 @@ const handleLogout = async () => {
     // Remove flex-grow: 1 from here, let the breadcrumb define its natural width.
     // The justify-content: space-between on .navbar will push .right-menu.
     // overflow: hidden; // Keep if breadcrumbs can be excessively long
-    padding-left: 5px; // Minimal padding, this is the "dead space" control
+    padding-left: 5px; // This is the main control for the "dead space" on the left.
+    // flex-grow: 1; // Removed to let breadcrumb size itself naturally.
+    // overflow: hidden; // Potentially re-add if very long breadcrumbs break layout.
   }
 
   .breadcrumb-container {
     display: flex;
-    align-items: center; // This is key for vertical centering of breadcrumb items
-    height: 100%; // Ensure it uses full navbar height
-    margin: 0;    // Reset margin
-    padding: 0;   // Reset padding
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
 
-    // Targeting Element Plus specific classes more directly for reset:
     :deep(.el-breadcrumb) {
       display: flex;
       align-items: center;
-      line-height: normal; // Reset line-height on the component itself
+      // No specific height/line-height here, let items define it and then center within .breadcrumb-container
+      font-size: 14px; // Consistent font size for breadcrumbs
     }
 
     :deep(.el-breadcrumb__item) {
-      display: flex; // Make items flex containers too
-      align-items: center; // Align inner content (link/span and separator)
-      margin: 0 !important; // Override Element Plus margins on items
-      padding: 0 !important; // Override Element Plus paddings on items
+      display: flex;
+      align-items: center;
+      // Resetting Element Plus defaults that might cause vertical shift
+      margin: 0 !important;
+      padding: 0 !important;
 
       .el-breadcrumb__inner,
       .el-breadcrumb__inner a,
       .el-breadcrumb__inner.is-link {
-        display: inline-flex !important; // Use !important to fight specificity if needed
+        display: inline-flex !important;
         align-items: center !important;
-        line-height: normal !important; // Reset line-height
-        padding: 0 5px !important; // Minimal padding around text
-        white-space: nowrap; // Prevent wrapping that might cause height issues
+        padding: 0 3px !important; // Reduced padding around text
+        line-height: 1.2; // A more natural line-height for text that's flex-centered
+        white-space: nowrap;
       }
       .el-breadcrumb__separator {
         display: inline-flex !important;
         align-items: center !important;
-        margin: 0 5px !important; // Control separator margin
-        line-height: normal !important;
+        margin: 0 4px !important; // Slightly adjust separator margin
+        line-height: 1.2; // Match text line-height
         color: var(--el-text-color-placeholder);
       }
     }
@@ -212,7 +215,7 @@ const handleLogout = async () => {
       color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
-      // padding: 0 5px; // Already handled by .el-breadcrumb__inner
+      // Padding is handled by .el-breadcrumb__inner
     }
 
     :deep(.el-breadcrumb__inner a),
