@@ -163,13 +163,32 @@ const handleLogout = async () => {
   .left-menu {
     display: flex;
     align-items: center;
+    // Allow left-menu to take available space if needed, but breadcrumb will align left
+    flex-grow: 1; // Allow it to grow
+    overflow: hidden; // Prevent breadcrumb from overflowing navbar
   }
 
   .breadcrumb-container {
+    margin-left: 0; // Remove any default/residual left margin
+    padding-left: 0; // Ensure no padding pushes it right
+    display: flex; // Ensure breadcrumb itself aligns items correctly
+    align-items: center; // Vertically center items within breadcrumb container
+    // The navbar itself is 50px high and uses align-items: center for .left-menu
+    // So, the breadcrumb should be vertically centered.
+    // If it appears too high, it might be due to line-height of el-breadcrumb-item.
+
     .no-redirect {
       color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
+    }
+    :deep(.el-breadcrumb__item) {
+      // Try to ensure breadcrumb items themselves don't have excessive top/bottom margin/padding
+      // that might make them appear misaligned within the 50px navbar.
+      .el-breadcrumb__inner {
+        display: inline-flex; // Helps with vertical alignment of text and icons if any
+        align-items: center;
+      }
     }
     :deep(.el-breadcrumb__inner a),
     :deep(.el-breadcrumb__inner.is-link) {
