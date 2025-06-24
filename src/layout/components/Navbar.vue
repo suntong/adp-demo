@@ -150,7 +150,7 @@ const handleLogout = async () => {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
+  height: 200px; // Changed to 200px as requested
   overflow: hidden;
   position: relative;
   background: var(--el-bg-color-overlay);
@@ -165,63 +165,62 @@ const handleLogout = async () => {
     display: flex;
     align-items: center; // This should vertically center .breadcrumb-container within .left-menu
     height: 100%;
-    padding-left: 10px; // Standardized left padding for the navbar content area
-    // Removed flex-grow and overflow from here for simplicity, relying on parent .navbar
+    padding-left: 10px;
+    // No flex-grow, no overflow here. Let parent navbar handle overall spacing.
   }
 
   .breadcrumb-container {
     display: flex;
-    align-items: center; // This should vertically center the el-breadcrumb component itself
-    height: 100%; // Take full height of parent (.left-menu)
+    align-items: center;
+    height: 100%; // Will be 200px
     margin: 0;
     padding: 0;
 
     :deep(.el-breadcrumb) {
       display: flex;
       align-items: center;
-      height: 100%; // Make el-breadcrumb fill the .breadcrumb-container height
-      font-size: 14px; // Set a base font size
-      // line-height: 50px; // Remove this, let align-items handle vertical centering of items
+      // font-size: 16px; // Slightly larger font for a taller navbar
+      font-size: 14px; // Keeping original font size
+      line-height: normal; // Let line height be natural for the font size
+      // No explicit height, let it be determined by items and centered by parent
     }
 
     :deep(.el-breadcrumb__item) {
-      display: flex; // Make each item a flex container
-      align-items: center; // Vertically center its inner content (.el-breadcrumb__inner and separator)
+      display: inline-flex;
+      align-items: center;
       margin: 0 !important;
       padding: 0 !important;
-      // No explicit line-height here, rely on parent's flex centering
+      line-height: normal; // Natural line height for the item content
 
       .el-breadcrumb__inner,
       .el-breadcrumb__inner a,
       .el-breadcrumb__inner.is-link {
-        display: flex !important; // Use flex for inner content as well for alignment
+        display: inline-flex !important;
         align-items: center !important;
-        padding: 0 3px !important; // Minimal padding around the text/link
-        line-height: normal; // Use browser default line-height for the text itself
+        padding: 0 5px !important; // Standard padding
         white-space: nowrap;
-        text-decoration: none; // Remove underline from links by default
+        text-decoration: none;
+        line-height: normal; // Natural line height
       }
       .el-breadcrumb__separator {
-        display: flex !important; // Flex for separator
+        display: inline-flex !important;
         align-items: center !important;
         margin: 0 5px !important;
-        line-height: normal; // Browser default line-height
+        line-height: normal;
         color: var(--el-text-color-placeholder);
       }
     }
 
-    // Style for the non-clickable current page text
     .no-redirect {
       color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
-      display: flex; // Ensure it behaves like other inner items for alignment
+      display: inline-flex;
       align-items: center;
-      padding: 0 3px !important; // Match link padding
+      padding: 0 5px !important; // Standard padding
       line-height: normal;
     }
 
-    // Link styles
     :deep(.el-breadcrumb__inner a),
     :deep(.el-breadcrumb__inner.is-link) {
         color: var(--el-text-color-regular);
