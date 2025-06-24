@@ -162,51 +162,49 @@ const handleLogout = async () => {
   padding: 0;
 
   .left-menu {
-    display: flex; // Already has align-items: center from .navbar
+    display: flex;
+    align-items: center; // This should vertically center .breadcrumb-container within .left-menu
     height: 100%;
-    // Remove flex-grow: 1 from here, let the breadcrumb define its natural width.
-    // The justify-content: space-between on .navbar will push .right-menu.
-    // overflow: hidden; // Keep if breadcrumbs can be excessively long
-    padding-left: 5px; // This is the main control for the "dead space" on the left.
-    // flex-grow: 1; // Removed to let breadcrumb size itself naturally.
-    // overflow: hidden; // Potentially re-add if very long breadcrumbs break layout.
+    padding-left: 10px; // Standardized left padding for the navbar content area
+    // Removed flex-grow and overflow from here for simplicity, relying on parent .navbar
   }
 
   .breadcrumb-container {
     display: flex;
-    align-items: center;
-    height: 100%;
+    align-items: center; // This should vertically center the el-breadcrumb component itself
+    height: 100%; // Take full height of parent (.left-menu)
     margin: 0;
     padding: 0;
 
     :deep(.el-breadcrumb) {
-      display: flex;
-      align-items: center;
-      // No specific height/line-height here, let items define it and then center within .breadcrumb-container
-      font-size: 14px; // Consistent font size for breadcrumbs
+      display: flex; // Make the el-breadcrumb component a flex container
+      align-items: center; // Vertically center its children (el-breadcrumb__item)
+      height: 100%; // Ensure el-breadcrumb takes up the full height to allow centering
+      font-size: 14px;
+      line-height: 1; // Critical: Set line-height to 1 to prevent text from adding extra height
     }
 
     :deep(.el-breadcrumb__item) {
-      display: flex;
-      align-items: center;
-      // Resetting Element Plus defaults that might cause vertical shift
+      display: inline-flex; // Use inline-flex for items
+      align-items: center; // Vertically center content within each item
       margin: 0 !important;
       padding: 0 !important;
+      line-height: 1; // Critical: Ensure item's line-height doesn't add extra space
 
       .el-breadcrumb__inner,
       .el-breadcrumb__inner a,
       .el-breadcrumb__inner.is-link {
         display: inline-flex !important;
-        align-items: center !important;
-        padding: 0 3px !important; // Reduced padding around text
-        line-height: 1.2; // A more natural line-height for text that's flex-centered
+        align-items: center !important; // Center text within the inner span/link
+        padding: 0 4px !important; // Consistent padding
+        line-height: inherit; // Inherit line-height: 1 from .el-breadcrumb__item
         white-space: nowrap;
       }
       .el-breadcrumb__separator {
         display: inline-flex !important;
-        align-items: center !important;
-        margin: 0 4px !important; // Slightly adjust separator margin
-        line-height: 1.2; // Match text line-height
+        align-items: center !important; // Center separator
+        margin: 0 5px !important;
+        line-height: inherit; // Inherit line-height: 1
         color: var(--el-text-color-placeholder);
       }
     }
@@ -215,9 +213,13 @@ const handleLogout = async () => {
       color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
-      // Padding is handled by .el-breadcrumb__inner
+      // Ensure it also aligns like a link/inner item
+      display: inline-flex;
+      align-items: center;
+      padding: 0 4px !important; // Consistent padding
     }
 
+    // These specific color overrides were fine, keeping them
     :deep(.el-breadcrumb__inner a),
     :deep(.el-breadcrumb__inner.is-link) {
         color: var(--el-text-color-regular);
