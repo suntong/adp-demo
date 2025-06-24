@@ -25,7 +25,12 @@ const routes = [
         path: 'demo/detail-example',
         name: 'DemoDetailExample',
         component: () => import('@/views/DemoDetailPage.vue'), // Placeholder, create this view
-        meta: { title: 'Demo Detail', icon: 'List', activeMenu: '/demo' } // activeMenu highlights /demo in sidebar
+        meta: {
+          title: 'Demo Detail',
+          icon: 'List',
+          activeMenu: '/demo',
+          breadcrumbParent: 'DemoPage' // Indicates logical parent for breadcrumbs
+        }
       }
     ]
   },

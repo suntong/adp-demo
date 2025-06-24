@@ -1,8 +1,6 @@
 <template>
   <div class="navbar">
     <div class="left-menu">
-      <!-- Hamburger Icon for sidebar toggle can be added here -->
-      <!-- <el-icon @click="toggleSideBar" class="hamburger"><Menu /></el-icon> -->
       <el-breadcrumb separator="/" class="breadcrumb-container">
         <el-breadcrumb-item
           v-for="(item, index) in breadcrumbs"
@@ -38,71 +36,116 @@
 </template>
 
 <script setup>
-import { CaretBottom, Menu } from '@element-plus/icons-vue'
+import { CaretBottom } from '@element-plus/icons-vue'
 import { useUserStore } from '@/store/user'
-import { useAppStore } from '@/store/app'
-import { useRoute, useRouter }
-from 'vue-router'
+// import { useAppStore } from '@/store/app' // Not currently used here, but kept for potential sidebar toggle
+import { useRoute, useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
-const appStore = useAppStore() // Kept for potential future use (e.g. sidebar toggle)
-const router = useRouter() // Kept for potential future use
+// const appStore = useAppStore()
+const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
 
 const breadcrumbs = ref([])
 
-const getBreadcrumbs = () => {
-  const newBreadcrumbs = [];
-
-  // Filter route.matched to include only routes that should appear in breadcrumbs
-  // These are routes that have `meta.title`.
-  const matchedRoutes = route.matched.filter(item => item.meta && item.meta.title);
-
-  matchedRoutes.forEach((matchedRoute, index) => {
-    const title = matchedRoute.meta.title;
-    const label = (typeof title === 'string' && title.startsWith('route.')) ? t(title) : title;
-
-    if (label) { // Only add if there's a valid label
-      const path = matchedRoute.path;
-
-      // The last item in the breadcrumb trail is the current page and should not be clickable.
-      // Also, if a route record has `meta.noRedirect: true` or `meta.breadcrumbClickable: false`, it shouldn't be clickable.
-      const isLast = index === matchedRoutes.length - 1;
-      const clickable = !isLast &&
-                        matchedRoute.meta.noRedirect !== true &&
-                        matchedRoute.meta.breadcrumbClickable !== false;
-
-      newBreadcrumbs.push({
-        path: path, // Use the route's actual path for navigation
-        name: label,
-        clickable: clickable,
-      });
-    }
-  });
-
-  breadcrumbs.value = newBreadcrumbs;
+const getBreadcrumbItem = (routeRecord) => {
+  if (!routeRecord || !routeRecord.meta || !routeRecord.meta.title) {
+    return null;
+  }
+  const title = routeRecord.meta.title;
+  const label = (typeof title === 'string' && title.startsWith('route.')) ? t(title) : title;
+  return {
+    path: routeRecord.path,
+    name: label,
+    meta: routeRecord.meta, // Keep meta for further checks like noRedirect
+  };
 };
 
+const getBreadcrumbs = () => {
+  let newBreadcrumbs = [];
+
+  // Get the full list of router records
+  const allRoutes = router.getRoutes();
+
+  // Start with the current route
+  let currentRouteRecord = route.matched[route.matched.length - 1]; // Most specific match
+
+  // Traverse upwards using breadcrumbParent or route.matched structure
+  const pathStack = [];
+  while (currentRouteRecord) {
+    const breadcrumbItem = getBreadcrumbItem(currentRouteRecord);
+    if (breadcrumbItem) {
+      pathStack.unshift(breadcrumbItem); // Add to the beginning
+    }
+
+    // Prioritize meta.breadcrumbParent
+    if (currentRouteRecord.meta && currentRouteRecord.meta.breadcrumbParent) {
+      currentRouteRecord = allRoutes.find(r => r.name === currentRouteRecord.meta.breadcrumbParent);
+    } else {
+      // Fallback to router hierarchy if no explicit parent
+      // Find currentRouteRecord in route.matched and get its predecessor if any
+      const currentIndexInMatched = route.matched.findIndex(r => r.name === currentRouteRecord.name);
+      if (currentIndexInMatched > 0) {
+        currentRouteRecord = route.matched[currentIndexInMatched - 1];
+      } else {
+        currentRouteRecord = null; // Reached the top of matched or no parent
+      }
+    }
+  }
+
+  // Ensure "Homepage" (Dashboard) is at the start if not already there and not the only item
+  const dashboardRouteRecord = allRoutes.find(r => r.name === 'Dashboard');
+  if (dashboardRouteRecord) {
+    const dashboardBreadcrumb = getBreadcrumbItem(dashboardRouteRecord);
+    if (dashboardBreadcrumb) {
+      if (pathStack.length === 0 && route.name === 'Dashboard') {
+        // If current page is Dashboard and stack is empty, just add Dashboard
+        newBreadcrumbs.push({ ...dashboardBreadcrumb, clickable: false });
+      } else if (pathStack.length > 0 && pathStack[0].name !== dashboardBreadcrumb.name) {
+        // If stack is not empty and Dashboard is not the first, prepend Dashboard
+        newBreadcrumbs.push({ ...dashboardBreadcrumb, clickable: true });
+        newBreadcrumbs.push(...pathStack);
+      } else if (pathStack.length === 0 && route.name !== 'Dashboard') {
+        // If stack is empty but current page is not dashboard (e.g. a top level page), add dashboard
+         newBreadcrumbs.push({ ...dashboardBreadcrumb, clickable: true });
+      }
+       else {
+        // Pathstack already starts with dashboard or is dashboard itself
+        newBreadcrumbs.push(...pathStack);
+      }
+    } else { // Fallback if dashboard route somehow has no title
+        newBreadcrumbs.push(...pathStack);
+    }
+  } else { // Fallback if dashboard route not found
+    newBreadcrumbs.push(...pathStack);
+  }
+
+  // Post-process for clickability
+  breadcrumbs.value = newBreadcrumbs.map((item, index, arr) => {
+    const isLast = index === arr.length - 1;
+    return {
+      ...item,
+      clickable: !isLast && item.meta.noRedirect !== true && item.meta.breadcrumbClickable !== false,
+    };
+  }).filter(item => item.name); // Ensure there's a name
+};
+
+
 watch(
-  () => route.path, // Watch the path for changes
+  () => route.path,
   () => {
     getBreadcrumbs();
   },
-  { immediate: true } // immediate: true to run on component mount and initial route load
+  { immediate: true }
 );
 
 const handleLogout = async () => {
   await userStore.logout();
   router.push({ path: '/dashboard', query: { loggedOut: true } });
 }
-
-// Example for sidebar toggle if needed later
-// const toggleSideBar = () => {
-//   appStore.toggleSidebar();
-// }
 </script>
 
 <style lang="scss" scoped>
@@ -120,21 +163,11 @@ const handleLogout = async () => {
   .left-menu {
     display: flex;
     align-items: center;
-
-    .hamburger {
-      font-size: 20px;
-      cursor: pointer;
-      margin-right: 15px;
-      color: var(--el-text-color-primary);
-      &:hover {
-        color: var(--el-color-primary);
-      }
-    }
   }
 
   .breadcrumb-container {
     .no-redirect {
-      color: var(--el-text-color-primary); // Current page title color
+      color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
     }
@@ -149,11 +182,6 @@ const handleLogout = async () => {
     :deep(.el-breadcrumb__separator) {
         color: var(--el-text-color-placeholder);
     }
-     /* This specific selector for last-child might not be needed if .no-redirect handles current page styling */
-     /* :deep(.el-breadcrumb__item:last-child .el-breadcrumb__inner) {
-        color: var(--el-text-color-primary);
-        font-weight: 600;
-    } */
   }
 
   .right-menu {
