@@ -183,53 +183,58 @@ const handleLogout = async () => {
     white-space: nowrap; // Keep breadcrumbs on one line
 
     :deep(.el-breadcrumb) {
-      display: flex; // Make el-breadcrumb itself a flex container
-      align-items: center; // Vertically center its items (el-breadcrumb__item)
-      padding: 0; // Remove any padding from el-breadcrumb itself
-      margin: 0;  // Remove any margin from el-breadcrumb itself
-      line-height: 1; // Suppress line-height influence on height
-      font-size: 14px; // Standard font size
+      display: flex;
+      align-items: center;
+      height: 50px;      // Force breadcrumb component to be 50px high
+      overflow: hidden;  // Clip if its internal items try to make it taller
+      font-size: 14px;
+      line-height: 50px; // Primary line-height for vertical centering attempt
+      margin: 0;
+      padding: 0;
     }
 
     :deep(.el-breadcrumb__item) {
-      display: inline-flex; // Items behave like inline elements but allow flex properties
-      align-items: center; // Vertically center content of each item
-      margin: 0 !important; // Force no margin
-      padding: 0 !important; // Force no padding
-      line-height: 1; // Suppress line-height influence
+      display: inline-flex;
+      align-items: center;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: inherit; // Inherit 50px from .el-breadcrumb
+      height: 100%;         // Try to make item take full height of parent .el-breadcrumb
 
       .el-breadcrumb__inner,
       .el-breadcrumb__inner a,
       .el-breadcrumb__inner.is-link {
-        display: inline-block; // Simpler for text handling with ellipsis
-        max-width: 150px; // Max width for individual breadcrumb links
+        display: inline-block;
+        max-width: 150px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         text-decoration: none;
-        padding: 0 3px; // Minimal padding around text
-        line-height: normal; // Let the font determine its own line height here
-                             // as its container .el-breadcrumb-item is flex-centered
+        padding: 0 3px;
+        vertical-align: middle; // Use with parent's line-height
+        line-height: normal;    // Reset for the text's own box
       }
       .el-breadcrumb__separator {
         display: inline-flex;
-        align-items: center;
+        align-items: center; // Better for icon separators
         margin: 0 5px !important;
         color: var(--el-text-color-placeholder);
-        line-height: normal; // Match text
+        vertical-align: middle; // Use with parent's line-height
+        line-height: normal;    // Reset for the separator's own box
       }
     }
 
-    .no-redirect { // Current page text
+    .no-redirect {
       color: var(--el-text-color-primary);
       font-weight: 600;
-      display: inline-block; // Match links
-      max-width: 150px; // Max width for current page title
+      display: inline-block;
+      max-width: 150px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      padding: 0 3px; // Minimal padding
-      line-height: normal; // Match text
+      padding: 0 3px;
+      vertical-align: middle; // Use with parent's line-height
+      line-height: normal;    // Reset for the text's own box
     }
 
     :deep(.el-breadcrumb__inner a),
