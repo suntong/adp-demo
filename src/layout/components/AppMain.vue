@@ -24,22 +24,20 @@ const cachedViews = computed(() => []) // Placeholder
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar height */
-  min-height: calc(100vh - 50px); // Reverted
-  width: 100%;
-  position: relative;
-  overflow-x: hidden; // Prevent horizontal scroll
-  overflow-y: auto;   // Allow vertical scroll
+  flex: 1; // Take remaining vertical space in .main-container (column flex)
+  overflow-y: auto;   // Allow vertical scroll for its own content
   padding: 20px;
-  background-color: var(--el-bg-color-page, #f0f2f5); // Use theme variable
-  // Ensure proper scrolling context for absolutely positioned children if any
-  -webkit-overflow-scrolling: touch; // For smoother scrolling on mobile
+  background-color: var(--el-bg-color-page, #f0f2f5);
+  position: relative; // For transitions or positioned children
+  // overflow-x: hidden; // Usually not needed if content is well-behaved, but can be added if horizontal overflow is an issue within app-main
+  -webkit-overflow-scrolling: touch;
 }
 
 .fixed-header+.app-main {
-  // This class would be added to app-main if there's a fixed header scenario
-  // For now, our Navbar is part of the flex layout, not fixed on top of AppMain typically
-  padding-top: 50px; // Reverted
+  // This class is for a scenario where the header (navbar) is position:fixed.
+  // In our current flex layout, this might not be directly applicable unless layout changes.
+  // If it were used, the padding-top should match the fixed header's height.
+  padding-top: 50px; // Assuming navbar height is 50px if fixed
 }
 
 /* fade-transform */

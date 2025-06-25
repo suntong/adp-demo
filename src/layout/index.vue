@@ -18,36 +18,32 @@ import AppMain from './components/AppMain.vue'
 
 <style lang="scss" scoped>
 .app-wrapper {
-  position: relative;
-  height: 100%;
+  position: relative; // Usually good for containing absolute elements if any
+  height: 100vh; // Occupy full viewport height
   width: 100%;
   display: flex;
+  overflow: hidden; // Prevent scrollbars on the body/html if content overflows flex items
 }
 
 .main-container {
-  flex: 1;
+  flex: 1; // Take up remaining width after sidebar
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  // transition: margin-left .28s; // Keep for future sidebar collapse animation
-  // margin-left: 210px; // Default sidebar width - REMOVED for direct flex layout
-  position: relative;
-  overflow-x: hidden; // Prevent main container from causing horizontal scroll if content is too wide
+  flex-direction: column; // Stack Navbar and AppMain vertically
+  // min-height: 100vh; // Not needed if app-wrapper is 100vh and this is a flex child
+  overflow: hidden; // Prevent this container's children from expanding it
+  position: relative; // For potential absolutely positioned children or z-index stacking
 }
 
 .sidebar-container {
-  transition: width 0.28s;
-  width: 210px; // Removed !important to see if it was causing issues, should still respect this width
-  flex-shrink: 0; // Prevent sidebar from shrinking if app-wrapper gets too narrow
-  height: 100vh;
-  font-size: 0px; // This is unusual, usually for inline-block spacing. Check if needed.
-  // top, bottom, left, z-index are more for fixed/absolute positioning, not strictly needed if it's a direct flex child
-  // For a flex child, these are not directly applicable unless its position is changed.
-  // z-index: 1001;
-  overflow: hidden; // Keep to hide overflowing sidebar content
-  background-color: #304156; // Example background
-  // Adding box-sizing explicitly just in case global one is overridden somewhere, though unlikely.
+  width: 210px;
+  flex-shrink: 0; // Prevent sidebar from shrinking
+  height: 100vh; // Full viewport height
+  overflow-y: auto; // Allow scrolling within sidebar if menu is too long
+  overflow-x: hidden;
+  background-color: var(--el-menu-bg-color, #304156); // Use Element Plus variable or fallback
   box-sizing: border-box;
+  // font-size: 0px; // Removed, as it's often a hack and might affect icons if not careful.
+  // transition: width 0.28s; // Keep for future sidebar collapse animation
 }
 
 // TODO: Add styles for mobile, collapsed sidebar, etc. from Art Design Pro
