@@ -24,8 +24,8 @@ const cachedViews = computed(() => []) // Placeholder
 
 <style lang="scss" scoped>
 .app-main {
-  /* 200= navbar height */
-  min-height: calc(100vh - 200px); // Adjusted for new navbar height
+  /* 50= navbar height */
+  min-height: calc(100vh - 50px); // Reverted
   width: 100%;
   position: relative;
   overflow-x: hidden; // Prevent horizontal scroll
@@ -39,9 +39,7 @@ const cachedViews = computed(() => []) // Placeholder
 .fixed-header+.app-main {
   // This class would be added to app-main if there's a fixed header scenario
   // For now, our Navbar is part of the flex layout, not fixed on top of AppMain typically
-  // If Navbar were fixed, this padding-top should also be 200px.
-  // However, current layout has Navbar in flex flow, so this class might not be used.
-  padding-top: 200px;
+  padding-top: 50px; // Reverted
 }
 
 /* fade-transform */

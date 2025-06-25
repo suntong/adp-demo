@@ -150,7 +150,7 @@ const handleLogout = async () => {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 200px; // Changed to 200px as requested
+  height: 50px; // Reverted to 50px
   overflow: hidden;
   position: relative;
   background: var(--el-bg-color-overlay);
@@ -163,77 +163,73 @@ const handleLogout = async () => {
 
   .left-menu {
     display: flex;
-    align-items: center; // This should vertically center .breadcrumb-container within .left-menu
-    height: 100%;
-    padding-left: 10px;
-    flex-grow: 1; /* Allow left menu to take up space */
-    flex-shrink: 1; /* Allow left menu to shrink */
-    min-width: 0; /* Crucial for allowing shrinking below content size and enabling text-overflow */
-    overflow: hidden; /* Hide overflow of the breadcrumb container if it's too wide */
+    align-items: center;
+    height: 100%; // Takes full 50px
+    padding-left: 10px; // Space on the left of breadcrumbs
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
   }
 
   .breadcrumb-container {
     display: flex;
-    align-items: center;
-    height: 100%;
+    align-items: center; // Vertically center el-breadcrumb within this container
+    height: 100%; // Takes full 50px
     margin: 0;
     padding: 0;
-    white-space: nowrap; /* Prevent breadcrumbs from wrapping to multiple lines */
-    overflow: hidden; /* Hide individual items if they overflow */
-    text-overflow: ellipsis; /* Show ellipsis for the container if content overflows */
+    overflow: hidden; // Hide breadcrumb overflow if it's too wide
+    text-overflow: ellipsis; // Add ellipsis if breadcrumb container overflows
+    white-space: nowrap; // Keep breadcrumbs on one line
 
     :deep(.el-breadcrumb) {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      line-height: normal;
+      display: flex; // Make el-breadcrumb itself a flex container
+      align-items: center; // Vertically center its items (el-breadcrumb__item)
+      padding: 0; // Remove any padding from el-breadcrumb itself
+      margin: 0;  // Remove any margin from el-breadcrumb itself
+      line-height: 1; // Suppress line-height influence on height
+      font-size: 14px; // Standard font size
     }
 
     :deep(.el-breadcrumb__item) {
-      display: inline-flex;
-      align-items: center;
-      margin: 0 !important;
-      padding: 0 !important;
-      line-height: normal;
-      // For individual item truncation (might be too aggressive, container level might be better)
-      // overflow: hidden;
-      // text-overflow: ellipsis;
-      // max-width: 150px; // Example max-width for individual items
+      display: inline-flex; // Items behave like inline elements but allow flex properties
+      align-items: center; // Vertically center content of each item
+      margin: 0 !important; // Force no margin
+      padding: 0 !important; // Force no padding
+      line-height: 1; // Suppress line-height influence
 
       .el-breadcrumb__inner,
       .el-breadcrumb__inner a,
       .el-breadcrumb__inner.is-link {
-        display: inline-block; // Changed from inline-flex for simpler text overflow
-        align-items: center; // Still useful if there were icons
-        padding: 0 5px !important;
+        display: inline-block; // Simpler for text handling with ellipsis
+        max-width: 150px; // Max width for individual breadcrumb links
+        overflow: hidden;
+        text-overflow: ellipsis;
         white-space: nowrap;
-        overflow: hidden; // Apply overflow to inner text container
-        text-overflow: ellipsis; // Apply ellipsis to inner text container
         text-decoration: none;
-        line-height: normal;
-        max-width: 200px; // Max width for individual breadcrumb text before ellipsis
+        padding: 0 3px; // Minimal padding around text
+        line-height: normal; // Let the font determine its own line height here
+                             // as its container .el-breadcrumb-item is flex-centered
       }
       .el-breadcrumb__separator {
-        display: inline-flex !important;
-        align-items: center !important;
+        display: inline-flex;
+        align-items: center;
         margin: 0 5px !important;
-        line-height: normal;
         color: var(--el-text-color-placeholder);
+        line-height: normal; // Match text
       }
     }
 
-    .no-redirect {
+    .no-redirect { // Current page text
       color: var(--el-text-color-primary);
-      cursor: text;
       font-weight: 600;
-      display: inline-block; // Match inner
-      align-items: center;
-      padding: 0 5px !important;
-      line-height: normal;
-      white-space: nowrap;
+      display: inline-block; // Match links
+      max-width: 150px; // Max width for current page title
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 200px; // Max width for current page title
+      white-space: nowrap;
+      padding: 0 3px; // Minimal padding
+      line-height: normal; // Match text
     }
 
     :deep(.el-breadcrumb__inner a),
@@ -244,41 +240,37 @@ const handleLogout = async () => {
             color: var(--el-color-primary);
         }
     }
-    :deep(.el-breadcrumb__separator) {
-        color: var(--el-text-color-placeholder);
-    }
+    // Separator color already handled above
   }
 
   .right-menu {
     display: flex;
-    align-items: center; // This should vertically center the avatar-container
-    height: 100%; // Ensure right-menu also takes full navbar height for alignment
+    align-items: center;
+    height: 100%; // Takes full 50px
     flex-shrink: 0;
     padding-right: 10px;
 
-    .avatar-container {
-      margin-left: 15px;
-      display: flex; // Make avatar-container a flex item to help center avatar-wrapper
-      align-items: center; // Center avatar-wrapper vertically
-      // Resetting any potential inherited line-height or height issues from el-dropdown
-      line-height: 1;
-      height: auto; // Let it be sized by its content (avatar-wrapper)
+    .avatar-container { // This is the el-dropdown
+      display: flex;
+      align-items: center;
+      height: 100%; // Make dropdown fill height to center its trigger
+      margin: 0; // Reset margin
+      padding: 0; // Reset padding
 
-      .avatar-wrapper {
-        position: relative;
-        cursor: pointer;
+      .avatar-wrapper { // This is the trigger slot content
         display: flex;
         align-items: center;
-        line-height: 1; // Ensure wrapper itself doesn't add line height
+        cursor: pointer;
+        // No explicit height, let content define it and be centered by parent
 
         .user-avatar {
           width: 36px;
           height: 36px;
           border-radius: 8px;
-          display: block; // Good practice for images to avoid bottom space
+          display: block;
         }
 
-        .el-icon-caret-bottom {
+        .el-icon-caret-bottom { // Caret icon
           font-size: 12px;
           margin-left: 5px;
           color: var(--el-text-color-secondary);
