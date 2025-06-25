@@ -166,23 +166,27 @@ const handleLogout = async () => {
     align-items: center; // This should vertically center .breadcrumb-container within .left-menu
     height: 100%;
     padding-left: 10px;
-    // No flex-grow, no overflow here. Let parent navbar handle overall spacing.
+    flex-grow: 1; /* Allow left menu to take up space */
+    flex-shrink: 1; /* Allow left menu to shrink */
+    min-width: 0; /* Crucial for allowing shrinking below content size and enabling text-overflow */
+    overflow: hidden; /* Hide overflow of the breadcrumb container if it's too wide */
   }
 
   .breadcrumb-container {
     display: flex;
     align-items: center;
-    height: 100%; // Will be 200px
+    height: 100%;
     margin: 0;
     padding: 0;
+    white-space: nowrap; /* Prevent breadcrumbs from wrapping to multiple lines */
+    overflow: hidden; /* Hide individual items if they overflow */
+    text-overflow: ellipsis; /* Show ellipsis for the container if content overflows */
 
     :deep(.el-breadcrumb) {
       display: flex;
       align-items: center;
-      // font-size: 16px; // Slightly larger font for a taller navbar
-      font-size: 14px; // Keeping original font size
-      line-height: normal; // Let line height be natural for the font size
-      // No explicit height, let it be determined by items and centered by parent
+      font-size: 14px;
+      line-height: normal;
     }
 
     :deep(.el-breadcrumb__item) {
@@ -190,17 +194,24 @@ const handleLogout = async () => {
       align-items: center;
       margin: 0 !important;
       padding: 0 !important;
-      line-height: normal; // Natural line height for the item content
+      line-height: normal;
+      // For individual item truncation (might be too aggressive, container level might be better)
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // max-width: 150px; // Example max-width for individual items
 
       .el-breadcrumb__inner,
       .el-breadcrumb__inner a,
       .el-breadcrumb__inner.is-link {
-        display: inline-flex !important;
-        align-items: center !important;
-        padding: 0 5px !important; // Standard padding
+        display: inline-block; // Changed from inline-flex for simpler text overflow
+        align-items: center; // Still useful if there were icons
+        padding: 0 5px !important;
         white-space: nowrap;
+        overflow: hidden; // Apply overflow to inner text container
+        text-overflow: ellipsis; // Apply ellipsis to inner text container
         text-decoration: none;
-        line-height: normal; // Natural line height
+        line-height: normal;
+        max-width: 200px; // Max width for individual breadcrumb text before ellipsis
       }
       .el-breadcrumb__separator {
         display: inline-flex !important;
@@ -215,10 +226,14 @@ const handleLogout = async () => {
       color: var(--el-text-color-primary);
       cursor: text;
       font-weight: 600;
-      display: inline-flex;
+      display: inline-block; // Match inner
       align-items: center;
-      padding: 0 5px !important; // Standard padding
+      padding: 0 5px !important;
       line-height: normal;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px; // Max width for current page title
     }
 
     :deep(.el-breadcrumb__inner a),
@@ -236,10 +251,15 @@ const handleLogout = async () => {
 
   .right-menu {
     display: flex;
-    align-items: center;
+    align-items: center; // This should vertically center the avatar-container
+    height: 100%; // Ensure right-menu also takes full navbar height for alignment
+    flex-shrink: 0;
+    padding-right: 10px;
 
     .avatar-container {
-      margin-left: 30px;
+      margin-left: 15px;
+      display: flex; // Make avatar-container a flex item to help center avatar-wrapper
+      align-items: center; // Center avatar-wrapper vertically
       .avatar-wrapper {
         position: relative;
         cursor: pointer;
