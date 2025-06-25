@@ -260,16 +260,22 @@ const handleLogout = async () => {
       margin-left: 15px;
       display: flex; // Make avatar-container a flex item to help center avatar-wrapper
       align-items: center; // Center avatar-wrapper vertically
+      // Resetting any potential inherited line-height or height issues from el-dropdown
+      line-height: 1;
+      height: auto; // Let it be sized by its content (avatar-wrapper)
+
       .avatar-wrapper {
         position: relative;
         cursor: pointer;
         display: flex;
         align-items: center;
+        line-height: 1; // Ensure wrapper itself doesn't add line height
 
         .user-avatar {
           width: 36px;
           height: 36px;
           border-radius: 8px;
+          display: block; // Good practice for images to avoid bottom space
         }
 
         .el-icon-caret-bottom {
