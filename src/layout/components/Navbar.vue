@@ -1,9 +1,11 @@
 <template>
   <div class="navbar">
     <div class="left-menu">
-      <!-- Static <Fold /> icon for testing -->
-      <el-icon class="hamburger" @click="toggleSidebar" :size="20">
-        <Fold />
+      <el-icon class="hamburger" @click="toggleSidebar" :size="20" :class="{'is-active': isSidebarCollapsed}">
+        <!-- Raw SVG for hamburger icon -->
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+          <path d="M128 256h768v128H128zM128 448h768v128H128zM128 640h768v128H128z"></path>
+        </svg>
       </el-icon>
       <el-breadcrumb separator="/" class="breadcrumb-container">
         <el-breadcrumb-item
@@ -40,7 +42,7 @@
 </template>
 
 <script setup>
-import { CaretBottom, Fold, Expand } from '@element-plus/icons-vue' // Changed Menu to Fold, Expand
+import { CaretBottom } from '@element-plus/icons-vue' // Removed Fold, Expand
 import { useUserStore } from '@/store/user'
 import { useAppStore } from '@/store/app'
 import { useRoute, useRouter } from 'vue-router'
