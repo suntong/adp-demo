@@ -26,26 +26,24 @@
 </template>
 
 <script setup>
-import { computed } from 'vue' // ref removed as isCollapse comes from store
-import { useRoute } from 'vue-router'
-import { HomeFilled, Promotion } from '@element-plus/icons-vue' // Example icons
-import { useAppStore } from '@/store/app'
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { HomeFilled, Promotion } from '@element-plus/icons-vue';
+import { useAppStore } from '@/store/app';
 
-const appStore = useAppStore()
-const isCollapse = computed(() => appStore.isSidebarCollapsed)
+const appStore = useAppStore();
+const isCollapse = computed(() => appStore.isSidebarCollapsed);
 
-const route = useRoute()
+const route = useRoute();
 const activeMenu = computed(() => {
-  const { meta, path } = route
-  // if set path, the sidebar will highlight the path you set
+  const { meta, path } = route;
   if (meta.activeMenu) {
-    return meta.activeMenu
+    return meta.activeMenu;
   }
-  return path
-})
+  return path;
+});
 
-// TODO: Fetch menu items from router configuration or a dedicated menu store module
-// For now, using static items.
+// TODO: Fetch menu items from router configuration
 </script>
 
 <style lang="scss" scoped>
