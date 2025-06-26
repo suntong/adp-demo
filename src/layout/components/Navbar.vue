@@ -1,8 +1,8 @@
 <template>
   <div class="navbar">
     <div class="left-menu">
-      <el-icon class="hamburger" @click="toggleSidebar" :size="20">
-        <Menu />
+      <el-icon class="hamburger" @click="toggleSidebar" :size="20" :class="{'is-active': isSidebarCollapsed}">
+        <component :is="isSidebarCollapsed ? Expand : Fold" />
       </el-icon>
       <el-breadcrumb separator="/" class="breadcrumb-container">
         <el-breadcrumb-item
@@ -39,11 +39,11 @@
 </template>
 
 <script setup>
-import { CaretBottom, Menu } from '@element-plus/icons-vue' // Added Menu
+import { CaretBottom, Fold, Expand } from '@element-plus/icons-vue' // Changed Menu to Fold, Expand
 import { useUserStore } from '@/store/user'
-import { useAppStore } from '@/store/app' // Uncommented and will be used
+import { useAppStore } from '@/store/app'
 import { useRoute, useRouter } from 'vue-router'
-import { ref, watch, computed } from 'vue' // Added computed
+import { ref, watch, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
