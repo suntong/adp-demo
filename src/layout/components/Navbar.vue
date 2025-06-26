@@ -1,7 +1,11 @@
 <template>
   <div class="navbar">
     <div class="left-menu">
-      <span class="hamburger" @click="toggleSidebar" :class="{'is-active': isSidebarCollapsed}">{{ String.fromCharCode(0xE250) }}</span>
+      <el-icon class="hamburger" @click="toggleSidebar" :size="20" :class="{'is-active': isSidebarCollapsed}">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
+          <path d="M128 256h768v128H128zM128 448h768v128H128zM128 640h768v128H128z"></path>
+        </svg>
+      </el-icon>
       <el-breadcrumb separator="/" class="breadcrumb-container">
         <el-breadcrumb-item
           v-for="(item, index) in breadcrumbs"
@@ -182,37 +186,30 @@ const handleLogout = async () => {
   .hamburger {
     padding: 0 10px;
     cursor: pointer;
-    // color: #FFF !important; // Reverted forced debug color
-    color: var(--el-text-color-primary); // Use theme variable
+    color: #409EFF; // Element Plus Blue, or any other colorful value
     font-size: 20px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: auto; /* Let padding define width around icon */
-    height: 100%; /* Take full navbar height to help with centering */
-    border: none; /* Ensure no border is making it invisible */
-    background-color: transparent; /* Ensure no bg is making it invisible */
+    height: 100%;
+    border: none;
+    background-color: transparent;
     opacity: 1;
     visibility: visible;
     position: relative;
     z-index: 1;
-    // Ensure line-height doesn't push it down if it's treated as text
-    line-height: 50px; // Match navbar height for simple vertical centering if text
 
-    // svg { // Remove SVG specific styles
-    //   width: 1em;
-    //   height: 1em;
-    //   display: block !important;
-    //   fill: currentColor !important;
-    // }
+    // el-icon usually handles its child svg sizing and fill based on font-size and color
+    // No specific svg child selector needed if fill="currentColor" is on SVG and el-icon color is set.
 
     &:hover {
-      background-color: rgba(0,0,0,0.05);
+      // Example: slightly darken the icon color or change background
+      background-color: rgba(64, 158, 255, 0.1);
     }
     &.is-active {
-      // transform: rotate(90deg); // Rotation might not make sense for all emoji/chars
+      // transform: rotate(90deg); // Optional: if you want rotation
     }
-    transition: transform 0.3s;
+    transition: transform 0.3s, background-color 0.3s;
   }
 
   .breadcrumb-container {
