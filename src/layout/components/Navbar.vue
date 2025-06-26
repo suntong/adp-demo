@@ -1,6 +1,9 @@
 <template>
   <div class="navbar">
     <div class="left-menu">
+      <el-icon class="hamburger" @click="toggleSidebar" :size="20">
+        <Menu />
+      </el-icon>
       <el-breadcrumb separator="/" class="breadcrumb-container">
         <el-breadcrumb-item
           v-for="(item, index) in breadcrumbs"
@@ -36,18 +39,24 @@
 </template>
 
 <script setup>
-import { CaretBottom } from '@element-plus/icons-vue'
+import { CaretBottom, Menu } from '@element-plus/icons-vue' // Added Menu
 import { useUserStore } from '@/store/user'
-// import { useAppStore } from '@/store/app' // Not currently used here, but kept for potential sidebar toggle
+import { useAppStore } from '@/store/app' // Uncommented and will be used
 import { useRoute, useRouter } from 'vue-router'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue' // Added computed
 import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
-// const appStore = useAppStore()
+const appStore = useAppStore()
 const router = useRouter()
 const route = useRoute()
 const { t } = useI18n()
+
+const isSidebarCollapsed = computed(() => appStore.isSidebarCollapsed)
+
+const toggleSidebar = () => {
+  appStore.toggleSidebar()
+}
 
 const breadcrumbs = ref([])
 
@@ -165,11 +174,24 @@ const handleLogout = async () => {
     display: flex;
     align-items: center;
     height: 100%; // Takes full 50px
-    padding-left: 10px; // Space on the left of breadcrumbs
+    padding-left: 10px; // Initial space, hamburger will be before this
     flex-grow: 1;
     flex-shrink: 1;
     min-width: 0;
     overflow: hidden;
+  }
+
+  .hamburger {
+    padding: 0 10px; // Spacing around hamburger
+    cursor: pointer;
+    color: var(--el-text-color-primary);
+    &:hover {
+      background-color: rgba(0,0,0,0.05); // Subtle hover
+    }
+    &.is-active { // Example for rotated icon
+      transform: rotate(90deg);
+    }
+    transition: transform 0.3s;
   }
 
   .breadcrumb-container {

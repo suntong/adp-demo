@@ -1,5 +1,5 @@
 <template>
-  <div class="app-wrapper">
+  <div class="app-wrapper" :class="{ 'sidebar-collapsed': isSidebarCollapsed }">
     <Sidebar class="sidebar-container" />
     <div class="main-container">
       <Navbar />
@@ -12,11 +12,20 @@
 import Sidebar from './components/Sidebar.vue'
 import Navbar from './components/Navbar.vue'
 import AppMain from './components/AppMain.vue'
+import { useAppStore } from '@/store/app'
+import { computed } from 'vue'
+
+const appStore = useAppStore()
+const isSidebarCollapsed = computed(() => appStore.isSidebarCollapsed)
 
 // TODO: Add logic for theme, mobile adaptation, etc. later
 </script>
 
 <style lang="scss" scoped>
+// Define collapsed width for sidebar
+$sidebar-width-collapsed: 64px;
+$sidebar-width-expanded: 210px;
+
 .app-wrapper {
   position: relative; // Usually good for containing absolute elements if any
   height: 100vh; // Occupy full viewport height
@@ -35,16 +44,29 @@ import AppMain from './components/AppMain.vue'
 }
 
 .sidebar-container {
-  width: 210px;
-  flex-shrink: 0; // Prevent sidebar from shrinking
-  height: 100vh; // Full viewport height
-  overflow-y: auto; // Allow scrolling within sidebar if menu is too long
+  width: $sidebar-width-expanded; // Use variable for expanded width
+  flex-shrink: 0;
+  height: 100vh;
+  overflow-y: auto;
   overflow-x: hidden;
-  background-color: var(--el-menu-bg-color, #304156); // Use Element Plus variable or fallback
+  background-color: var(--el-menu-bg-color, #304156);
   box-sizing: border-box;
-  // font-size: 0px; // Removed, as it's often a hack and might affect icons if not careful.
-  // transition: width 0.28s; // Keep for future sidebar collapse animation
+  transition: width 0.28s ease-in-out; // Smooth transition for width
 }
 
-// TODO: Add styles for mobile, collapsed sidebar, etc. from Art Design Pro
+.app-wrapper.sidebar-collapsed {
+  .sidebar-container {
+    width: $sidebar-width-collapsed; // Width when collapsed
+    // When sidebar is collapsed, icons should ideally remain visible.
+    // el-menu with :collapse handles this internally for menu items.
+  }
+  // If using margin-left on main-container for positioning:
+  // .main-container {
+  //   margin-left: $sidebar-width-collapsed;
+  // }
+}
+
+// TODO: Add styles for mobile, collapsed sidebar, etc. from Art Design Pro.
+// For example, on mobile, sidebar might become an overlay or hide completely,
+// and main-container would take full width.
 </style>

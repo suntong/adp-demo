@@ -26,12 +26,13 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue' // ref removed as isCollapse comes from store
 import { useRoute } from 'vue-router'
 import { HomeFilled, Promotion } from '@element-plus/icons-vue' // Example icons
+import { useAppStore } from '@/store/app'
 
-// TODO: Get collapse state from store (Pinia)
-const isCollapse = ref(false) // Placeholder
+const appStore = useAppStore()
+const isCollapse = computed(() => appStore.isSidebarCollapsed)
 
 const route = useRoute()
 const activeMenu = computed(() => {
@@ -50,16 +51,49 @@ const activeMenu = computed(() => {
 <style lang="scss" scoped>
 .sidebar {
   height: 100%;
+  background-color: var(--el-menu-bg-color, #304156); // Match layout's sidebar bg
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 210px;
-    min-height: 400px;
+    // width: 210px; // Width is controlled by .sidebar-container in Layout.vue
+    // min-height: 400px; // Not necessary, should fill height
   }
   .el-menu {
     border-right: none;
+    // When collapsed, ensure the icons are centered if text is hidden
+    &.el-menu--collapse {
+      :deep(.el-tooltip__trigger) { // Targets the wrapper for tooltip in collapsed mode
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+       :deep(.el-sub-menu__title span), :deep(.el-menu-item span) {
+        display: none; // Explicitly hide span text if menu structure doesn't auto-hide well
+      }
+      :deep(.el-sub-menu__icon-arrow) {
+        display: none; // Hide submenu arrows when collapsed
+      }
+    }
   }
 }
 .scrollbar-wrapper {
+  height: 100%; // Ensure scrollbar takes full height
   overflow-x: hidden !important;
+  .el-scrollbar__view { // Ensure view inside scrollbar also takes full height
+    height: 100%;
+  }
 }
+
+// Adjust icon size or padding if needed when collapsed
+:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-menu-item [class^=el-icon-]),
+:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-sub-menu__title [class^=el-icon-]) {
+  // font-size: 18px; // Example: slightly larger icons when collapsed
+  // margin: 0;
+  // padding: 0 23px; // Adjust padding to center the 20px icon in 64px width
+}
+
+:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-menu-item),
+:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-sub-menu__title) {
+  // padding: 0 20px !important; // Adjust padding for items when collapsed
+}
+
 </style>
