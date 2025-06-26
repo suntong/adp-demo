@@ -1,8 +1,9 @@
 <template>
   <div class="navbar">
     <div class="left-menu">
-      <el-icon class="hamburger" @click="toggleSidebar" :size="20" :class="{'is-active': isSidebarCollapsed}">
-        <component :is="isSidebarCollapsed ? Expand : Fold" />
+      <!-- Static <Fold /> icon for testing -->
+      <el-icon class="hamburger" @click="toggleSidebar" :size="20">
+        <Fold />
       </el-icon>
       <el-breadcrumb separator="/" class="breadcrumb-container">
         <el-breadcrumb-item
