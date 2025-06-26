@@ -215,9 +215,9 @@ const handleLogout = async () => {
       background-color: rgba(64, 158, 255, 0.1); // Subtle hover for the blue icon
     }
     &.is-active {
-      // transform: rotate(90deg); // Optional: rotation for active state
+      transform: rotate(180deg); // Standard rotation for hamburger to arrow/close
     }
-    transition: transform 0.3s, background-color 0.3s; // Restore transitions
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
   }
 
   .breadcrumb-container {
