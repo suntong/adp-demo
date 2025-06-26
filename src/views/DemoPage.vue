@@ -8,8 +8,8 @@
     <section class="feature-section">
       <h2>Theme Switching</h2>
       <el-radio-group v-model="theme" @change="handleThemeChange">
-        <el-radio-button label="light">Light</el-radio-button>
-        <el-radio-button label="dark">Dark</el-radio-button>
+        <el-radio-button value="light">Light</el-radio-button>
+        <el-radio-button value="dark">Dark</el-radio-button>
       </el-radio-group>
       <p>Current theme: {{ theme }}</p>
       <p class="theme-sensitive-text">This text color should change with the theme.</p>
@@ -19,8 +19,8 @@
     <section class="feature-section">
       <h2>Multi-language Support</h2>
       <el-radio-group v-model="currentLanguage" @change="handleLanguageChange">
-        <el-radio-button label="en">English</el-radio-button>
-        <el-radio-button label="zh-cn">中文 (Chinese)</el-radio-button>
+        <el-radio-button value="en">English</el-radio-button>
+        <el-radio-button value="zh-cn">中文 (Chinese)</el-radio-button>
       </el-radio-group>
       <p>{{ $t('message.hello') }}</p>
     </section>

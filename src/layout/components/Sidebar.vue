@@ -5,9 +5,9 @@
         :default-active="activeMenu"
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
-        background-color="#304156"
-        text-color="#bfcbd9"
-        active-text-color="#409EFF"
+        background-color="transparent" // Inherit from .sidebar or .sidebar-container
+        text-color="#bfcbd9" // These can be CSS variables too for theming
+        active-text-color="#409EFF" // e.g. var(--el-color-primary)
         router
       >
         <!-- Placeholder Menu Item -->
@@ -55,45 +55,42 @@ const activeMenu = computed(() => {
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     // width: 210px; // Width is controlled by .sidebar-container in Layout.vue
-    // min-height: 400px; // Not necessary, should fill height
   }
   .el-menu {
     border-right: none;
+    height: 100%; // Ensure el-menu itself tries to fill the scrollbar view height
+
     // When collapsed, ensure the icons are centered if text is hidden
     &.el-menu--collapse {
-      :deep(.el-tooltip__trigger) { // Targets the wrapper for tooltip in collapsed mode
+      :deep(.el-tooltip__trigger) {
         display: flex;
         justify-content: center;
         align-items: center;
+        width: 100%; // Ensure the trigger area fills the collapsed item width
       }
-       :deep(.el-sub-menu__title span), :deep(.el-menu-item span) {
-        display: none; // Explicitly hide span text if menu structure doesn't auto-hide well
-      }
-      :deep(.el-sub-menu__icon-arrow) {
-        display: none; // Hide submenu arrows when collapsed
-      }
+      // Element Plus typically handles hiding text via CSS for collapsed menu,
+      // but these can be added if default behavior is not sufficient.
+      // :deep(.el-sub-menu__title span), :deep(.el-menu-item span) {
+      //   display: none;
+      // }
+      // :deep(.el-sub-menu__icon-arrow) {
+      //   display: none;
+      // }
     }
   }
 }
 .scrollbar-wrapper {
-  height: 100%; // Ensure scrollbar takes full height
+  height: 100%;
   overflow-x: hidden !important;
-  .el-scrollbar__view { // Ensure view inside scrollbar also takes full height
+  .el-scrollbar__view {
     height: 100%;
   }
 }
 
-// Adjust icon size or padding if needed when collapsed
-:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-menu-item [class^=el-icon-]),
-:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-sub-menu__title [class^=el-icon-]) {
-  // font-size: 18px; // Example: slightly larger icons when collapsed
-  // margin: 0;
-  // padding: 0 23px; // Adjust padding to center the 20px icon in 64px width
-}
-
-:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-menu-item),
-:global(.app-wrapper.sidebar-collapsed .sidebar-container .el-sub-menu__title) {
-  // padding: 0 20px !important; // Adjust padding for items when collapsed
-}
-
+// More specific styling for collapsed icons might be needed if they don't center well
+// within the 64px width. Element Plus usually handles this with its own :collapse styles.
+// :global(.app-wrapper.sidebar-collapsed .sidebar-container .el-menu--collapse .el-menu-item),
+// :global(.app-wrapper.sidebar-collapsed .sidebar-container .el-menu--collapse .el-sub-menu__title) {
+//   justify-content: center;
+// }
 </style>
