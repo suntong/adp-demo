@@ -187,18 +187,33 @@ const handleLogout = async () => {
   .hamburger {
     padding: 0 10px;
     cursor: pointer;
-    color: #FFF !important; // Force a visible color for debugging - white on dark navbar
-    // color: var(--el-text-color-primary); // Original
-    font-size: 20px; // Ensure el-icon itself has a font-size if :size prop isn't enough
-    display: inline-flex; // Ensure it's displayed
-    align-items: center; // Ensure icon inside is centered
+    // color: #FFF !important; // Reverted forced debug color
+    color: var(--el-text-color-primary); // Use theme variable
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
-    &:hover {
-      background-color: rgba(255,255,255,0.1); // Brighter hover for debugging
-      // background-color: rgba(0,0,0,0.05); // Original hover
+    width: auto; /* Let padding define width around icon */
+    height: 100%; /* Take full navbar height to help with centering */
+    border: none; /* Ensure no border is making it invisible */
+    background-color: transparent; /* Ensure no bg is making it invisible */
+    opacity: 1;
+    visibility: visible;
+    position: relative;
+    z-index: 1; /* Ensure it's not behind something simple */
+
+    svg {
+      width: 1em; // SVG should take size from font-size of parent
+      height: 1em;
+      display: block !important; // Make sure SVG itself is visible
+      fill: currentColor !important; // Ensure SVG uses the .hamburger color
     }
-    &.is-active { // Example for rotated icon
-      transform: rotate(90deg);
+
+    &:hover {
+      background-color: rgba(0,0,0,0.05);
+    }
+    &.is-active {
+      // transform: rotate(90deg); // Rotation can be kept if desired for hamburger
     }
     transition: transform 0.3s;
   }
