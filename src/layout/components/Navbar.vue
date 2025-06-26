@@ -184,32 +184,47 @@ const handleLogout = async () => {
   }
 
   .hamburger {
-    padding: 0 10px;
+    padding: 0 !important;         // Reset padding
+    margin: 0 10px !important;      // Original horizontal margin for spacing
     cursor: pointer;
-    color: #409EFF; // Element Plus Blue, or any other colorful value
-    font-size: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    border: none;
-    background-color: transparent;
-    opacity: 1;
-    visibility: visible;
-    position: relative;
-    z-index: 1;
+    font-size: 20px !important;     // For SVG's 1em to resolve
+    width: 24px !important;         // Explicit width for the icon wrapper
+    height: 24px !important;        // Explicit height for the icon wrapper (this should be <= navbar height and centered)
+                                    // If navbar is 50px, this will be centered by parent align-items:center
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #FF0000 !important;       // DEBUG: Bright red color for parent <i> (for currentColor)
+    background-color: yellow !important; // DEBUG: Yellow background for <i> box
+    border: 1px solid blue !important;   // DEBUG: Blue border for <i> box
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: static !important;      // Ensure it's in flow, not abs/fixed causing issues
+    z-index: auto !important;         // Reset z-index
+    overflow: visible !important;     // See if children are overflowing
 
-    // el-icon usually handles its child svg sizing and fill based on font-size and color
-    // No specific svg child selector needed if fill="currentColor" is on SVG and el-icon color is set.
+    // Targeting the SVG element directly nested within .hamburger (which is el-icon)
+    // The DOM shows <i class="el-icon hamburger"><svg>...</svg></i>
+    // So, direct child selector `> svg` or just `svg` if scoped enough.
+    // Using :deep(svg) if el-icon wraps svg in more elements, but given DOM, direct is fine.
+    svg {
+      display: block !important;
+      width: 100% !important;         // SVG should fill the 24x24px of its parent <i>
+      height: 100% !important;
+      fill: #00FF00 !important;       // DEBUG: Bright green fill for the SVG paths
+      stroke: none !important;
+      background-color: magenta !important; // DEBUG: See SVG element's own box
+      border: 1px dashed cyan !important; // DEBUG: Border for SVG element's box
+    }
 
-    &:hover {
-      // Example: slightly darken the icon color or change background
-      background-color: rgba(64, 158, 255, 0.1);
-    }
-    &.is-active {
-      // transform: rotate(90deg); // Optional: if you want rotation
-    }
-    transition: transform 0.3s, background-color 0.3s;
+    // Commenting out hover/active for debugging, can be restored later.
+    // &:hover {
+    //   background-color: rgba(64, 158, 255, 0.1);
+    // }
+    // &.is-active {
+    //   // transform: rotate(90deg);
+    // }
+    // transition: transform 0.3s, background-color 0.3s;
   }
 
   .breadcrumb-container {
