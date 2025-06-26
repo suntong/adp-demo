@@ -5,9 +5,9 @@
         :default-active="activeMenu"
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
-        background-color="transparent" <!-- Inherit from .sidebar or .sidebar-container -->
-        text-color="#bfcbd9" <!-- These can be CSS variables too for theming -->
-        active-text-color="#409EFF" <!-- e.g. var(--el-color-primary) -->
+        background-color="transparent"
+        text-color="#bfcbd9"
+        active-text-color="#409EFF"
         router
       >
         <!-- Menu Item -->
