@@ -1,12 +1,7 @@
 <template>
   <div class="navbar">
     <div class="left-menu">
-      <el-icon class="hamburger" @click="toggleSidebar" :size="20" :class="{'is-active': isSidebarCollapsed}">
-        <!-- Raw SVG for hamburger icon -->
-        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor">
-          <path d="M128 256h768v128H128zM128 448h768v128H128zM128 640h768v128H128z"></path>
-        </svg>
-      </el-icon>
+      <span class="hamburger" @click="toggleSidebar" :class="{'is-active': isSidebarCollapsed}">{{ String.fromCharCode(0xE250) }}</span>
       <el-breadcrumb separator="/" class="breadcrumb-container">
         <el-breadcrumb-item
           v-for="(item, index) in breadcrumbs"
@@ -200,20 +195,22 @@ const handleLogout = async () => {
     opacity: 1;
     visibility: visible;
     position: relative;
-    z-index: 1; /* Ensure it's not behind something simple */
+    z-index: 1;
+    // Ensure line-height doesn't push it down if it's treated as text
+    line-height: 50px; // Match navbar height for simple vertical centering if text
 
-    svg {
-      width: 1em; // SVG should take size from font-size of parent
-      height: 1em;
-      display: block !important; // Make sure SVG itself is visible
-      fill: currentColor !important; // Ensure SVG uses the .hamburger color
-    }
+    // svg { // Remove SVG specific styles
+    //   width: 1em;
+    //   height: 1em;
+    //   display: block !important;
+    //   fill: currentColor !important;
+    // }
 
     &:hover {
       background-color: rgba(0,0,0,0.05);
     }
     &.is-active {
-      // transform: rotate(90deg); // Rotation can be kept if desired for hamburger
+      // transform: rotate(90deg); // Rotation might not make sense for all emoji/chars
     }
     transition: transform 0.3s;
   }
