@@ -5,12 +5,12 @@
         :default-active="activeMenu"
         class="el-menu-vertical-demo"
         :collapse="isCollapse"
-        background-color="transparent" // Inherit from .sidebar or .sidebar-container
-        text-color="#bfcbd9" // These can be CSS variables too for theming
-        active-text-color="#409EFF" // e.g. var(--el-color-primary)
+        background-color="transparent" <!-- Inherit from .sidebar or .sidebar-container -->
+        text-color="#bfcbd9" <!-- These can be CSS variables too for theming -->
+        active-text-color="#409EFF" <!-- e.g. var(--el-color-primary) -->
         router
       >
-        <!-- Placeholder Menu Item -->
+        <!-- Menu Item -->
         <el-menu-item index="/">
           <el-icon><HomeFilled /></el-icon>
           <span>Dashboard</span>
