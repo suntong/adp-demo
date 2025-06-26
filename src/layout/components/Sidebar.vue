@@ -11,14 +11,40 @@
         router
       >
         <!-- Menu Item -->
-        <el-menu-item index="/">
+        <el-menu-item index="/dashboard"> <!-- Ensure this links to /dashboard -->
           <el-icon><HomeFilled /></el-icon>
           <span>Dashboard</span>
         </el-menu-item>
-        <el-menu-item index="/demo">
-          <el-icon><Promotion /></el-icon>
-          <span>Demo Page</span>
-        </el-menu-item>
+
+        <el-sub-menu index="/demo"> <!-- Parent menu item for Demo -->
+          <template #title>
+            <el-icon><Promotion /></el-icon>
+            <span>Demo Page</span>
+          </template>
+          <el-menu-item index="/demo/detail-example">
+            <!-- <el-icon><List /></el-icon> --> <!-- Optional icon for sub-item -->
+            <span>Demo Page Details</span>
+          </el-menu-item>
+          <!-- If /demo itself is a page, it can be an item too, or remove this sub-menu and make Demo Page a direct link again -->
+           <el-menu-item index="/demo">
+            <span>Main Demo Content</span> <!-- Or "Overview", etc. -->
+          </el-menu-item>
+        </el-sub-menu>
+
+        <el-sub-menu index="/sub-menu-demo"> <!-- Unique index for the sub-menu group -->
+          <template #title>
+            <el-icon><Menu /></el-icon> <!-- Using Menu icon, ensure it's imported -->
+            <span>Sub Menu Demo</span>
+          </template>
+          <el-menu-item index="/sub-menu-demo/page1">
+            <!-- <el-icon><Document /></el-icon> --> <!-- Optional icon -->
+            <span>Sub Menu 1</span>
+          </el-menu-item>
+          <el-menu-item index="/sub-menu-demo/page2">
+            <!-- <el-icon><Document /></el-icon> --> <!-- Optional icon -->
+            <span>Sub Menu 2</span>
+          </el-menu-item>
+        </el-sub-menu>
         <!-- TODO: Dynamically generate menu from routes -->
       </el-menu>
     </el-scrollbar>
@@ -28,7 +54,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { HomeFilled, Promotion } from '@element-plus/icons-vue';
+import { HomeFilled, Promotion, Menu } from '@element-plus/icons-vue'; // Added Menu
 import { useAppStore } from '@/store/app';
 
 const appStore = useAppStore();
@@ -49,8 +75,7 @@ const activeMenu = computed(() => {
 <style lang="scss" scoped>
 .sidebar {
   height: 100%;
-  // background-color: var(--el-menu-bg-color, #304156); // Original
-  background-color: #001529 !important; // Force a dark color for debugging
+  background-color: var(--el-menu-bg-color, #304156); // Reverted to theme variable
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     // width: 210px; // Width is controlled by .sidebar-container in Layout.vue

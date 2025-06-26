@@ -29,8 +29,38 @@ const routes = [
           title: 'Demo Detail',
           icon: 'List',
           activeMenu: '/demo',
-          breadcrumbParent: 'DemoPage' // Indicates logical parent for breadcrumbs
+          breadcrumbParent: 'DemoPage'
         }
+      },
+      // New Sub Menu Demo routes
+      {
+        path: 'sub-menu-demo', // Base path for this section
+        name: 'SubMenuDemo', // Optional name for the group itself if needed for routing
+        // If '/sub-menu-demo' itself should not be a page, redirect to its first child.
+        // Or provide a component that acts as a RouterView for these children if they are deeply nested.
+        // For simplicity, we can make the parent menu item in Sidebar.vue just a non-clickable title,
+        // or link it to the first child. Here, we'll define children directly under Layout.
+        // To make a top-level menu item in Sidebar.vue for "Sub Menu Demo",
+        // we don't necessarily need a parent route here if children are direct children of Layout.
+        // However, for cleaner breadcrumbs and potential future grouping, a parent route is good.
+        // We'll make it a redirecting parent for now.
+        redirect: '/sub-menu-demo/page1',
+        component: { template: '<router-view />' }, // Simple pass-through RouterView component
+        meta: { title: 'Sub Menu Demo', icon: 'Menu' }, // For potential top-level menu item in sidebar
+        children: [
+          {
+            path: 'page1', // Full path will be /sub-menu-demo/page1
+            name: 'SubMenuPage1',
+            component: () => import('@/views/SubMenuPage1.vue'),
+            meta: { title: 'Sub Menu 1', breadcrumbParent: 'SubMenuDemo', /* icon: 'Document' */ }
+          },
+          {
+            path: 'page2', // Full path will be /sub-menu-demo/page2
+            name: 'SubMenuPage2',
+            component: () => import('@/views/SubMenuPage2.vue'),
+            meta: { title: 'Sub Menu 2', breadcrumbParent: 'SubMenuDemo', /* icon: 'Document' */ }
+          }
+        ]
       }
     ]
   },
