@@ -182,11 +182,17 @@ const handleLogout = async () => {
   }
 
   .hamburger {
-    padding: 0 10px; // Spacing around hamburger
+    padding: 0 10px;
     cursor: pointer;
-    color: var(--el-text-color-primary);
+    color: #FFF !important; // Force a visible color for debugging - white on dark navbar
+    // color: var(--el-text-color-primary); // Original
+    font-size: 20px; // Ensure el-icon itself has a font-size if :size prop isn't enough
+    display: inline-flex; // Ensure it's displayed
+    align-items: center; // Ensure icon inside is centered
+    justify-content: center;
     &:hover {
-      background-color: rgba(0,0,0,0.05); // Subtle hover
+      background-color: rgba(255,255,255,0.1); // Brighter hover for debugging
+      // background-color: rgba(0,0,0,0.05); // Original hover
     }
     &.is-active { // Example for rotated icon
       transform: rotate(90deg);
