@@ -75,7 +75,7 @@ const activeMenu = computed(() => {
 <style lang="scss" scoped>
 .sidebar {
   height: 100%;
-  background-color: var(--el-menu-bg-color, #304156) !important; // Use variable, fallback, and !important
+  background-color: #304156 !important; // Always use this specific dark color
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     // width: 210px; // Width is controlled by .sidebar-container in Layout.vue
