@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, RouterView } from 'vue-router'
+import { h } from 'vue'
 import Layout from '@/layout/index.vue'
 // import { useUserStore } from '@/store/user' // For auth guards
 
@@ -45,7 +46,7 @@ const routes = [
         // However, for cleaner breadcrumbs and potential future grouping, a parent route is good.
         // We'll make it a redirecting parent for now.
         redirect: '/sub-menu-demo/page1',
-        component: { template: '<router-view />' }, // Simple pass-through RouterView component
+        component: { render: () => h(RouterView) }, // Use render function
         meta: { title: 'Sub Menu Demo', icon: 'Menu' }, // For potential top-level menu item in sidebar
         children: [
           {

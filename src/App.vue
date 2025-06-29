@@ -60,10 +60,16 @@ watch(() => appStore.currentLanguage, (newLang) => {
   document.documentElement.lang = newLang
 }, { immediate: true }) // Set initially
 
-// Watch for theme changes to update html class (redundant if store action already does it, but safe)
-watch(() => appStore.currentTheme, (newTheme) => {
-  document.documentElement.className = newTheme === 'dark' ? 'dark' : '';
-}, { immediate: true }) // Set initially
+// Watch for theme changes to update html class.
+// This ensures consistency if the theme is changed by other means or on initial load.
+watch(() => appStore.currentTheme, (themeValue) => {
+  // appStore.currentTheme is now guaranteed to be 'light' or 'dark' by the store logic
+  if (themeValue === 'dark') {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}, { immediate: true }); // Set initially based on store's loaded/defaulted theme
 
 </script>
 

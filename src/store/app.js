@@ -2,10 +2,19 @@ import { defineStore } from 'pinia'
 import i18n from '@/plugins/i18n' // For language change side effects
 
 export const useAppStore = defineStore('app', {
-  state: () => ({
-    theme: localStorage.getItem('theme') || 'light',
-    language: localStorage.getItem('language') || (navigator.language.toLowerCase().startsWith('zh') ? 'zh-cn' : 'en'),
-    isSidebarCollapsed: false, // Example state for sidebar
+  state: () => {
+    let initialTheme = localStorage.getItem('theme');
+    // Ensure theme is strictly 'light' or 'dark'
+    if (initialTheme !== 'dark' && initialTheme !== 'light') {
+      initialTheme = 'light'; // Default to 'light' if stored value is invalid or missing
+    }
+    return {
+      theme: initialTheme,
+      language: localStorage.getItem('language') || (navigator.language.toLowerCase().startsWith('zh') ? 'zh-cn' : 'en'),
+      isSidebarCollapsed: false, // Example state for sidebar
+    };
+  },
+  getters: {
     isLocked: false, // Lock screen state
     openTabs: [ // Example: Initial tabs, could be persisted
       { name: 'route.dashboard', path: '/dashboard', closable: false, icon: 'HomeFilled' },
@@ -24,9 +33,15 @@ export const useAppStore = defineStore('app', {
   },
   actions: {
     setTheme(newTheme) {
-      this.theme = newTheme
-      document.documentElement.className = newTheme === 'dark' ? 'dark' : ''
-      localStorage.setItem('theme', newTheme)
+      const validTheme = newTheme === 'dark' ? 'dark' : 'light'; // Ensure valid theme state
+      this.theme = validTheme; // Update state first
+
+      if (validTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('theme', validTheme);
       // Potentially trigger ECharts theme update if ECharts instances are managed globally
     },
     setLanguage(lang) {
