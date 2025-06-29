@@ -2,29 +2,6 @@
   <div class="demo-page">
     <h1>{{ $t('route.demoPage') }} - Art Design Pro Features Showcase</h1>
 
-    <el-divider content-position="left">Core Functionality</el-divider>
-
-    <!-- Theme Switching -->
-    <section class="feature-section">
-      <h2>Theme Switching</h2>
-      <el-radio-group v-model="theme" @change="handleThemeChange">
-        <el-radio-button value="light">Light</el-radio-button>
-        <el-radio-button value="dark">Dark</el-radio-button>
-      </el-radio-group>
-      <p>Current theme: {{ theme }}</p>
-      <p class="theme-sensitive-text">This text color should change with the theme.</p>
-    </section>
-
-    <!-- Multi-language Support -->
-    <section class="feature-section">
-      <h2>Multi-language Support</h2>
-      <el-radio-group v-model="currentLanguage" @change="handleLanguageChange">
-        <el-radio-button value="en">English</el-radio-button>
-        <el-radio-button value="zh-cn">中文 (Chinese)</el-radio-button>
-      </el-radio-group>
-      <p>{{ $t('message.hello') }}</p>
-    </section>
-
     <el-divider content-position="left">UI Components & Features</el-divider>
 
     <!-- Global Search (Mock UI) -->
@@ -153,6 +130,29 @@
     <el-divider content-position="left">HttpBin Form</el-divider>
     <!-- HttpBin Form Component will be added here later -->
     <HttpBinForm />
+
+    <el-divider content-position="left">Core Functionality</el-divider>
+
+    <!-- Theme Switching -->
+    <section class="feature-section">
+      <h2>Theme Switching</h2>
+      <el-radio-group v-model="theme" @change="handleThemeChange">
+        <el-radio-button value="light">Light</el-radio-button>
+        <el-radio-button value="dark">Dark</el-radio-button>
+      </el-radio-group>
+      <p>Current theme: {{ theme }}</p>
+      <p class="theme-sensitive-text">This text color should change with the theme.</p>
+    </section>
+
+    <!-- Multi-language Support -->
+    <section class="feature-section">
+      <h2>Multi-language Support</h2>
+      <el-radio-group v-model="currentLanguage" @change="handleLanguageChange">
+        <el-radio-button value="en">English</el-radio-button>
+        <el-radio-button value="zh-cn">中文 (Chinese)</el-radio-button>
+      </el-radio-group>
+      <p>{{ $t('message.hello') }}</p>
+    </section>
 
   </div>
 </template>

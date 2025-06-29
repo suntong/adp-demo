@@ -10,6 +10,12 @@
 // Dark theme variables
 // These are applied when <html class="dark">
 html.dark {
+  // Element Plus Menu variables
+  --el-menu-bg-color: #1f2d3d; // <--- ADD THIS LINE
+  --el-menu-text-color: #bfcbd9;
+  --el-menu-hover-bg-color: #2c3e50;
+  --el-menu-active-color: var(--el-color-primary, #409EFF); // Active menu item text color
+
   // Background Colors
   --el-bg-color: #141414; // Overall background for dark components
   --el-bg-color-overlay: #1d1d1d; // Background for overlays like dialogs, popovers

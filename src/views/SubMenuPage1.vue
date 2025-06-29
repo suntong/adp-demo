@@ -2,7 +2,7 @@
   <div class="sub-menu-page1">
     <h1>Sub Menu Page 1</h1>
     <p>Content for Sub Menu Page 1.</p>
-    <el-empty description="Sub Menu Page 1 Content Area" />
+    <!-- <el-empty description="Sub Menu Page 1 Content Area" /> -->
   </div>
 </template>
 
