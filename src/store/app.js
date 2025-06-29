@@ -12,17 +12,15 @@ export const useAppStore = defineStore('app', {
       theme: initialTheme,
       language: localStorage.getItem('language') || (navigator.language.toLowerCase().startsWith('zh') ? 'zh-cn' : 'en'),
       isSidebarCollapsed: false, // Example state for sidebar
+      isLocked: false, // Lock screen state
+      openTabs: [ // Example: Initial tabs, could be persisted
+        { name: 'route.dashboard', path: '/dashboard', closable: false, icon: 'HomeFilled' },
+        // { name: 'route.demoPage', path: '/demo', closable: true, icon: 'Promotion' }
+      ],
+      // cachedViews for keep-alive, should be array of component names
+      cachedViews: ['DashboardPage'] // Example
     };
   },
-  getters: {
-    isLocked: false, // Lock screen state
-    openTabs: [ // Example: Initial tabs, could be persisted
-      { name: 'route.dashboard', path: '/dashboard', closable: false, icon: 'HomeFilled' },
-      // { name: 'route.demoPage', path: '/demo', closable: true, icon: 'Promotion' }
-    ],
-    // cachedViews for keep-alive, should be array of component names
-    cachedViews: ['DashboardPage'] // Example
-  }),
   getters: {
     currentTheme: (state) => state.theme,
     currentLanguage: (state) => state.language,
