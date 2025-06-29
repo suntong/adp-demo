@@ -21,13 +21,13 @@
             <el-icon><Promotion /></el-icon>
             <span>Demo Page</span>
           </template>
-          <el-menu-item index="/demo/detail-example">
-            <!-- <el-icon><List /></el-icon> --> <!-- Optional icon for sub-item -->
-            <span>Demo Page Details</span>
-          </el-menu-item>
           <!-- If /demo itself is a page, it can be an item too, or remove this sub-menu and make Demo Page a direct link again -->
            <el-menu-item index="/demo">
             <span>Main Demo Content</span> <!-- Or "Overview", etc. -->
+          </el-menu-item>
+          <el-menu-item index="/demo/detail-example">
+            <!-- <el-icon><List /></el-icon> --> <!-- Optional icon for sub-item -->
+            <span>Demo Page Details</span>
           </el-menu-item>
         </el-sub-menu>
 
@@ -75,7 +75,7 @@ const activeMenu = computed(() => {
 <style lang="scss" scoped>
 .sidebar {
   height: 100%;
-  background-color: var(--el-menu-bg-color, #304156); // Reverted to theme variable
+  // background-color: var(--el-menu-bg-color, #304156); // Removed to allow global theme to control
 
   .el-menu-vertical-demo:not(.el-menu--collapse) {
     // width: 210px; // Width is controlled by .sidebar-container in Layout.vue

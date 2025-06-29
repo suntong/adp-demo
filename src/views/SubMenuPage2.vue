@@ -1,20 +1,14 @@
 <template>
-  <div class="sub-menu-page2">
-    <h1>Sub Menu Page 2</h1>
-    <p>Content for Sub Menu Page 2.</p>
-    <!-- <el-empty description="Sub Menu Page 2 Content Area" /> -->
+  <div style="background-color: blue; color: white; padding: 50px; height: 300px; border: 5px solid yellow;">
+    <h1 style="color: white;">TEST SUB MENU PAGE 2</h1>
+    <p style="color: white;">This is test content. If you see this, the component is rendering.</p>
   </div>
 </template>
 
 <script setup>
-// No specific script needed for this placeholder
+// No specific script needed for this diagnostic placeholder
 </script>
 
 <style lang="scss" scoped>
-.sub-menu-page2 {
-  padding: 20px;
-  h1 {
-    margin-top: 0;
-  }
-}
+/* Cleared existing styles for diagnostic */
 </style>

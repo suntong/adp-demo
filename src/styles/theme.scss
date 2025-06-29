@@ -6,16 +6,19 @@
 //   --el-color-primary: #409eff;
 // }
 
+// Base theme styles for components that need explicit light mode styling
+// if not covered by Element Plus defaults or if overriding.
+.sidebar-container {
+  background-color: #304156; // Default light theme sidebar background
+}
+// Note: .el-menu in Sidebar.vue has background-color="transparent", so it will show .sidebar-container's bg.
+// Text colors for menu items in light mode are handled by el-menu props (text-color, active-text-color)
+// or Element Plus default CSS variables. If #bfcbd9 (a light color) is used for text
+// on #304156 background, it should be visible.
 
 // Dark theme variables
 // These are applied when <html class="dark">
 html.dark {
-  // Element Plus Menu variables
-  --el-menu-bg-color: #1f2d3d; // <--- ADD THIS LINE
-  --el-menu-text-color: #bfcbd9;
-  --el-menu-hover-bg-color: #2c3e50;
-  --el-menu-active-color: var(--el-color-primary, #409EFF); // Active menu item text color
-
   // Background Colors
   --el-bg-color: #141414; // Overall background for dark components
   --el-bg-color-overlay: #1d1d1d; // Background for overlays like dialogs, popovers
